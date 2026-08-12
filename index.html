@@ -637,22 +637,22 @@ document.querySelectorAll(".slider").forEach(function(slider) {
     }
 
 
-    prev.addEventListener("click", function() {
+prev.addEventListener("click", function() {
 
-        current--;
+    current -= visible;
 
-        update();
+    update();
 
-    });
+});
 
 
-    next.addEventListener("click", function() {
+next.addEventListener("click", function() {
 
-        current++;
+    current += visible;
 
-        update();
+    update();
 
-    });
+});
 
 
     /* 터치 스와이프 */
@@ -680,10 +680,10 @@ document.querySelectorAll(".slider").forEach(function(slider) {
             }
 
             if (distance < 0) {
-                current++;
-            } else {
-                current--;
-            }
+    current += visible;
+    } else {
+    current -= visible;
+    }  
 
             update();
 
