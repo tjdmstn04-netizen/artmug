@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +8,46 @@
 <title>Artmug Portfolio</title>
 
 <style>
+
+/* =========================
+   기본 설정
+========================= */
+
 * {
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
 }
 
 body {
     background: #ffffff;
-    color: #222;
+    color: #222222;
     font-family: Arial, "Noto Sans KR", sans-serif;
 }
 
-/* 전체 페이지 */
+
+/* =========================
+   전체 페이지
+========================= */
+
 .page {
     width: 100%;
     max-width: 1180px;
     margin: 0 auto;
-    padding-bottom: 100px;
+    padding: 20px 0 100px;
 }
 
-/* 섹션 */
+
+/* =========================
+   섹션
+========================= */
+
 .section {
+    width: 100%;
     margin: 90px 0;
 }
 
@@ -39,16 +55,17 @@ body {
     text-align: center;
     font-size: 28px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin: 0 0 25px;
 }
 
 .section-description {
     text-align: center;
+    color: #555555;
     font-size: 15px;
     line-height: 1.8;
     margin: -10px 20px 30px;
-    color: #555;
 }
+
 
 /* =========================
    슬라이더
@@ -57,7 +74,6 @@ body {
 .slider {
     position: relative;
     width: 100%;
-    overflow: hidden;
 }
 
 .slider-window {
@@ -67,35 +83,62 @@ body {
 
 .slider-track {
     display: flex;
+    width: 100%;
     transition: transform 0.45s ease;
     will-change: transform;
 }
 
-/* 기본 1장 */
+
+/* 기본: 1장씩 */
+
 .slide {
     flex: 0 0 100%;
+    width: 100%;
     min-width: 0;
-    padding: 0 4px;
 }
 
-/* 두 장 표시 */
+
+/* 2장씩 */
+
 .slider.two .slide {
     flex: 0 0 50%;
+    width: 50%;
 }
 
-/* 이미지 */
+
+/* =========================
+   이미지
+========================= */
+
 .slide img {
     display: block;
     width: 100%;
     height: auto;
+    margin: 0;
     cursor: zoom-in;
 }
 
-/* 영상 */
+
+/* 2장 슬라이더 간격 */
+
+.slider.two .slide:nth-child(odd) {
+    padding-right: 5px;
+}
+
+.slider.two .slide:nth-child(even) {
+    padding-left: 5px;
+}
+
+
+/* =========================
+   영상
+========================= */
+
 .video-wrap {
+    position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: #111;
+    background: #111111;
 }
 
 .video-wrap video {
@@ -103,30 +146,46 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background: #111;
+    background: #111111;
 }
 
-/* 좌우 버튼 */
+
+/* =========================
+   이전 / 다음 버튼
+========================= */
+
 .slider-button {
     position: absolute;
+
     top: 50%;
     transform: translateY(-50%);
+
     width: 46px;
     height: 46px;
-    border: 0;
+
+    padding: 0;
+
+    border: none;
     border-radius: 50%;
-    background: rgba(0,0,0,0.58);
-    color: white;
-    font-size: 29px;
-    line-height: 46px;
-    text-align: center;
+
+    background: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+
+    font-size: 30px;
+    font-family: Arial, sans-serif;
+    line-height: 44px;
+
     cursor: pointer;
-    z-index: 10;
-    opacity: 0.85;
+
+    z-index: 20;
+
+    transition:
+        background 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .slider-button:hover {
-    opacity: 1;
+    background: rgba(0, 0, 0, 0.78);
 }
 
 .slider-prev {
@@ -137,27 +196,42 @@ body {
     right: 14px;
 }
 
-/* 현재 페이지 표시 */
-.slider-counter {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 13px;
-    color: #777;
-}
 
 /* =========================
-   이미지 확대 모달
+   페이지 번호
+========================= */
+
+.slider-counter {
+    text-align: center;
+
+    margin-top: 13px;
+
+    color: #777777;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* =========================
+   이미지 확대
 ========================= */
 
 .lightbox {
     position: fixed;
+
     inset: 0;
-    background: rgba(0,0,0,0.88);
+
     display: none;
+
     align-items: center;
     justify-content: center;
-    z-index: 99999;
+
     padding: 30px;
+
+    background: rgba(0, 0, 0, 0.90);
+
+    z-index: 99999;
 }
 
 .lightbox.active {
@@ -165,26 +239,46 @@ body {
 }
 
 .lightbox img {
+    display: block;
+
     max-width: 95vw;
     max-height: 92vh;
+
+    width: auto;
+    height: auto;
+
     object-fit: contain;
 }
 
 .lightbox-close {
     position: fixed;
-    top: 18px;
-    right: 25px;
-    border: 0;
-    background: transparent;
+
+    top: 15px;
+    right: 24px;
+
+    border: none;
+
+    padding: 0;
+
     color: white;
-    font-size: 42px;
+    background: transparent;
+
+    font-size: 46px;
+    line-height: 1;
+
     cursor: pointer;
 }
 
-/* 모바일 */
+
+/* =========================
+   모바일
+========================= */
+
 @media (max-width: 700px) {
+
     .page {
         width: 100%;
+        padding-bottom: 60px;
     }
 
     .section {
@@ -193,13 +287,19 @@ body {
 
     .section-title {
         font-size: 23px;
+        margin-bottom: 20px;
+    }
+
+    .section-description {
+        font-size: 14px;
     }
 
     .slider-button {
         width: 38px;
         height: 38px;
-        line-height: 38px;
-        font-size: 24px;
+
+        font-size: 25px;
+        line-height: 36px;
     }
 
     .slider-prev {
@@ -209,364 +309,466 @@ body {
     .slider-next {
         right: 7px;
     }
+
+    .slider-counter {
+        font-size: 12px;
+    }
+
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <div class="page">
 
-    <!-- =========================================
-         채널아트
-    ========================================== -->
 
-    <section class="section">
+<!-- =====================================================
+     채널아트
+     04 → 01
+===================================================== -->
 
-        <div class="section-title">
-            채널아트
-        </div>
+<section class="section">
 
-        <div
-            class="slider one"
-            data-visible="1"
-            data-files='[
-            "channel12.png", 
-            "channel11.png",  
-            "channel10.png",
-            "channel09.png"
-            "channel08.png", 
-            "channel07.png",  
-            "channel06.png",
-            "channel05.png",
-            "channel04.png", 
-            "channel03.png",  
+    <div class="section-title">
+        채널아트
+    </div>
+
+    <div
+        class="slider one"
+        data-visible="1"
+        data-files='[
+            "channel04.png",
+            "channel03.png",
             "channel02.png",
-            "channel01.png",
-                
-            ]'>
-        </div>
+            "channel01.png"
+        ]'>
+    </div>
 
-    </section>
-
-
-    <!-- =========================================
-         로딩화면
-    ========================================== -->
-
-    <section class="section">
-
-        <div class="section-title">
-            로딩화면 / 대기화면
-        </div>
-
-        <div class="section-description">
-            로딩화면 / 대기화면 / 라이브 시작 전 루프
-        </div>
-
-        <div
-            class="slider one video-slider"
-            data-visible="1"
-            data-type="video"
-            data-files='[
-                "loading01.mp4",
-                "loading02.mp4",
-                "loading03.mp4",
-                "loading04.mp4",
-                "loading05.mp4",
-                "loading06.mp4",
-                "loading07.mp4"
-            ]'>
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =========================================
-         하단패널
-    ========================================== -->
 
-    <section class="section">
+<!-- =====================================================
+     로딩화면
+     07 → 01
+===================================================== -->
 
-        <div class="section-title">
-            하단패널
-        </div>
+<section class="section">
 
-        <div
-            class="slider one"
-            data-visible="1"
-            data-files='[
-                "pannel01.png",
-                "pannel02.png",
-                "pannel03.png",
-                "pannel04.png",
-                "pannel05.png",
-                "pannel06.png",
-                "pannel07.png",
-                "pannel08.png",
-                "pannel09.png",
-                "pannel10.png",
-                "pannel11.png"
-            ]'>
-        </div>
+    <div class="section-title">
+        로딩화면 / 대기화면
+    </div>
 
-    </section>
+    <div class="section-description">
+        로딩화면 / 대기화면 / 라이브 시작 전 루프
+    </div>
 
+    <div
+        class="slider one"
+        data-visible="1"
+        data-type="video"
+        data-files='[
+            "loading07.mp4",
+            "loading06.mp4",
+            "loading05.mp4",
+            "loading04.mp4",
+            "loading03.mp4",
+            "loading02.mp4",
+            "loading01.mp4"
+        ]'>
+    </div>
 
-    <!-- =========================================
-         방송화면
-    ========================================== -->
-
-    <section class="section">
-
-        <div class="section-title">
-            디자인 방송화면
-        </div>
-
-        <div class="section-description">
-            게임화면 / 잡담용 등 용도<br>
-            컨셉 및 들어가길 원하는 요소, 색상 등
-        </div>
-
-        <div
-            class="slider one"
-            data-visible="1"
-            data-files='[
-                "방송화면 02.png",
-                "방송화면 03.png",
-                "방송화면 04.png",
-                "방송화면 05.png",
-                "방송화면 06.png",
-                "방송화면08.png"
-            ]'>
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =========================================
-         로고
-    ========================================== -->
 
-    <section class="section">
+<!-- =====================================================
+     하단패널
+     11 → 01
+===================================================== -->
 
-        <div class="section-title">
-            로고
-        </div>
+<section class="section">
 
-        <div class="section-description">
-            로고로 만들 글자, 컨셉, 색상 및 원하는 요소를 알려주세요.
-        </div>
+    <div class="section-title">
+        하단패널
+    </div>
 
-        <div
-            class="slider one"
-            data-visible="1"
-            data-files='[
-                "logo 1.png",
-                "logo 2.png",
-                "logo 3.png",
-                "logo 4.png",
-                "logo 5.png",
-                "logo 6.png",
-                "logo 7.png",
-                "logo 8.png",
-                "logo 9.png",
-                "logo 10.png",
-                "logo 11.png",
-                "logo 12.png",
-                "logo 13.png",
-                "logo 14.png"
-            ]'>
-        </div>
+    <div
+        class="slider one"
+        data-visible="1"
+        data-files='[
+            "pannel11.png",
+            "pannel10.png",
+            "pannel09.png",
+            "pannel08.png",
+            "pannel07.png",
+            "pannel06.png",
+            "pannel05.png",
+            "pannel04.png",
+            "pannel03.png",
+            "pannel02.png",
+            "pannel01.png"
+        ]'>
+    </div>
 
-    </section>
+</section>
 
 
-    <!-- =========================================
-         썸네일
-    ========================================== -->
 
-    <section class="section">
+<!-- =====================================================
+     방송화면
+     08 → 02
+===================================================== -->
 
-        <div class="section-title">
-            썸네일
-        </div>
+<section class="section">
 
-        <div
-            class="slider one"
-            data-visible="1"
-            data-files='[
-                "썸네일01.png",
-                "썸네일02.png",
-                "썸네일03.png",
-                "썸네일04.png",
-                "썸네일05.png",
-                "썸네일06.png"
-            ]'>
-        </div>
+    <div class="section-title">
+        디자인 방송화면
+    </div>
 
-    </section>
+    <div class="section-description">
+        게임화면 / 잡담용 등 용도<br>
+        컨셉 및 들어가길 원하는 요소, 색상 등
+    </div>
 
+    <div
+        class="slider one"
+        data-visible="1"
+        data-files='[
+            "방송화면08.png",
+            "방송화면 06.png",
+            "방송화면 05.png",
+            "방송화면 04.png",
+            "방송화면 03.png",
+            "방송화면 02.png"
+        ]'>
+    </div>
 
-    <!-- =========================================
-         포스터
-    ========================================== -->
-
-    <section class="section">
-
-        <div class="section-title">
-            포스터
-        </div>
-
-        <div
-            class="slider one"
-            data-visible="1"
-            data-files='[
-                "poster 1.png",
-                "poster 2.png",
-                "poster 3.png",
-                "poster 4.png"
-            ]'>
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =========================================
-         RT 포스터
-         ★ 두 장씩
-    ========================================== -->
 
-    <section class="section">
+<!-- =====================================================
+     로고
+     14 → 01
+===================================================== -->
 
-        <div class="section-title">
-            알티 포스터
-        </div>
+<section class="section">
 
-        <div
-            class="slider two"
-            data-visible="2"
-            data-files='[
-                "RTposter01.png",
-                "RTposter02.png",
-                "RTposter03.png",
-                "RTposter04.png",
-                "RTposter05.png",
-                "RTposter06.png",
-                "RTposter08.png",
-                "RTposter8.png"
-            ]'>
-        </div>
+    <div class="section-title">
+        로고
+    </div>
 
-    </section>
+    <div class="section-description">
+        필수: 로고로 만들 글자, 색상<br>
+        추가 정보: 원하는 스타일의 샘플 번호, 들어가길 원하는 요소<br><br>
+
+        프리소스를 사용하지 않고 직접 제작합니다.<br>
+        벡터파일(svg) 추가 가능 - 문의 필요
+    </div>
+
+    <div
+        class="slider one"
+        data-visible="1"
+        data-files='[
+            "logo 14.png",
+            "logo 13.png",
+            "logo 12.png",
+            "logo 11.png",
+            "logo 10.png",
+            "logo 9.png",
+            "logo 8.png",
+            "logo 7.png",
+            "logo 6.png",
+            "logo 5.png",
+            "logo 4.png",
+            "logo 3.png",
+            "logo 2.png",
+            "logo 1.png"
+        ]'>
+    </div>
+
+</section>
 
 
-    <!-- =========================================
-         PPT
-         ★ 두 장씩
-    ========================================== -->
 
-    <section class="section">
+<!-- =====================================================
+     썸네일
+     06 → 01
+===================================================== -->
 
-        <div class="section-title">
-            데뷔 PPT
-        </div>
+<section class="section">
 
-        <div
-            class="slider two"
-            data-visible="2"
-            data-files='[
-                "PPT 1.png",
-                "PPT 2.png",
-                "PPT 3.png",
-                "PPT 4.png",
-                "PPT 5.png",
-                "PPT 6.png",
-                "ppt 7.png",
-                "ppt 8.png",
-                "ppt 9.png",
-                "ppt 10.png",
-                "ppt 11.png",
-                "ppt 12.png",
-                "ppt 13.png",
-                "ppt 14.png",
-                "PPT 15.png",
-                "PPT 16.png",
-                "PPT 17.png",
-                "PPT 18.png"
-            ]'>
-        </div>
+    <div class="section-title">
+        썸네일
+    </div>
 
-    </section>
+    <div
+        class="slider one"
+        data-visible="1"
+        data-files='[
+            "썸네일06.png",
+            "썸네일05.png",
+            "썸네일04.png",
+            "썸네일03.png",
+            "썸네일02.png",
+            "썸네일01.png"
+        ]'>
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     포스터
+     4 → 1
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        포스터
+    </div>
+
+    <div
+        class="slider one"
+        data-visible="1"
+        data-files='[
+            "poster 4.png",
+            "poster 3.png",
+            "poster 2.png",
+            "poster 1.png"
+        ]'>
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RT 포스터
+     2장씩 표시
+     2장씩 이동
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        알티 포스터
+    </div>
+
+    <div
+        class="slider two"
+        data-visible="2"
+        data-files='[
+            "RTposter8.png",
+            "RTposter08.png",
+            "RTposter06.png",
+            "RTposter05.png",
+            "RTposter04.png",
+            "RTposter03.png",
+            "RTposter02.png",
+            "RTposter01.png"
+        ]'>
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PPT
+     18 → 1
+     2장씩 표시
+     2장씩 이동
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+        데뷔 PPT
+    </div>
+
+    <div
+        class="slider two"
+        data-visible="2"
+        data-files='[
+            "PPT 18.png",
+            "PPT 17.png",
+            "PPT 16.png",
+            "PPT 15.png",
+            "ppt 14.png",
+            "ppt 13.png",
+            "ppt 12.png",
+            "ppt 11.png",
+            "ppt 10.png",
+            "ppt 9.png",
+            "ppt 8.png",
+            "ppt 7.png",
+            "PPT 6.png",
+            "PPT 5.png",
+            "PPT 4.png",
+            "PPT 3.png",
+            "PPT 2.png",
+            "PPT 1.png"
+        ]'>
+    </div>
+
+</section>
+
 
 </div>
 
 
-<!-- 이미지 확대 -->
-<div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightbox-close">×</button>
-    <img id="lightbox-image" src="" alt="">
+
+<!-- =====================================================
+     이미지 확대창
+===================================================== -->
+
+<div
+    class="lightbox"
+    id="lightbox">
+
+    <button
+        class="lightbox-close"
+        id="lightbox-close"
+        type="button">
+        ×
+    </button>
+
+    <img
+        id="lightbox-image"
+        src=""
+        alt="">
+
 </div>
+
 
 
 <script>
 
-/* =========================================
-   슬라이더 생성
-========================================= */
+/* =====================================================
+   모든 슬라이더 생성
+===================================================== */
 
 document.querySelectorAll(".slider").forEach(function(slider) {
 
-    const files = JSON.parse(slider.dataset.files);
-    const visible = Number(slider.dataset.visible || 1);
-    const type = slider.dataset.type || "image";
+    const files =
+        JSON.parse(slider.dataset.files);
 
+    const visible =
+        Number(slider.dataset.visible || 1);
+
+    const type =
+        slider.dataset.type || "image";
+
+
+    /* 현재 첫 번째 아이템 번호 */
     let current = 0;
 
-    const windowEl = document.createElement("div");
-    windowEl.className = "slider-window";
 
-    const track = document.createElement("div");
-    track.className = "slider-track";
+    /* 슬라이더 창 */
+    const windowEl =
+        document.createElement("div");
+
+    windowEl.className =
+        "slider-window";
 
 
-    /* 아이템 생성 */
+    /* 실제로 이동하는 트랙 */
+    const track =
+        document.createElement("div");
+
+    track.className =
+        "slider-track";
+
+
+    /* =================================================
+       아이템 생성
+    ================================================= */
+
     files.forEach(function(file) {
 
-        const slide = document.createElement("div");
-        slide.className = "slide";
+        const slide =
+            document.createElement("div");
+
+        slide.className =
+            "slide";
 
 
+        /* 영상 */
         if (type === "video") {
 
-            const wrap = document.createElement("div");
-            wrap.className = "video-wrap";
+            const wrap =
+                document.createElement("div");
 
-            const video = document.createElement("video");
-            video.src = file;
-            video.controls = true;
-            video.loop = true;
-            video.playsInline = true;
-            video.preload = "metadata";
+            wrap.className =
+                "video-wrap";
+
+
+            const video =
+                document.createElement("video");
+
+            video.src =
+                encodeURI(file);
+
+            video.controls =
+                true;
+
+            video.loop =
+                true;
+
+            video.playsInline =
+                true;
+
+            video.preload =
+                "metadata";
+
 
             wrap.appendChild(video);
+
             slide.appendChild(wrap);
 
-        } else {
+        }
 
-            const img = document.createElement("img");
 
-            img.src = file;
-            img.alt = "";
-            img.loading = "lazy";
+        /* 이미지 */
+        else {
 
-            img.addEventListener("click", function() {
-                openLightbox(file);
-            });
+            const img =
+                document.createElement("img");
+
+            img.src =
+                encodeURI(file);
+
+            img.alt =
+                "";
+
+            img.loading =
+                "lazy";
+
+
+            img.addEventListener(
+                "click",
+                function() {
+
+                    openLightbox(
+                        encodeURI(file)
+                    );
+
+                }
+            );
+
 
             slide.appendChild(img);
 
         }
+
 
         track.appendChild(slide);
 
@@ -574,166 +776,354 @@ document.querySelectorAll(".slider").forEach(function(slider) {
 
 
     windowEl.appendChild(track);
+
     slider.appendChild(windowEl);
 
 
-    /* 이전 버튼 */
-    const prev = document.createElement("button");
 
-    prev.className = "slider-button slider-prev";
-    prev.type = "button";
-    prev.innerHTML = "‹";
+    /* =================================================
+       이전 버튼
+    ================================================= */
+
+    const prev =
+        document.createElement("button");
+
+    prev.className =
+        "slider-button slider-prev";
+
+    prev.type =
+        "button";
+
+    prev.innerHTML =
+        "‹";
+
+    prev.setAttribute(
+        "aria-label",
+        "이전 샘플"
+    );
+
 
     slider.appendChild(prev);
 
 
-    /* 다음 버튼 */
-    const next = document.createElement("button");
 
-    next.className = "slider-button slider-next";
-    next.type = "button";
-    next.innerHTML = "›";
+    /* =================================================
+       다음 버튼
+    ================================================= */
+
+    const next =
+        document.createElement("button");
+
+    next.className =
+        "slider-button slider-next";
+
+    next.type =
+        "button";
+
+    next.innerHTML =
+        "›";
+
+    next.setAttribute(
+        "aria-label",
+        "다음 샘플"
+    );
+
 
     slider.appendChild(next);
 
 
-    /* 카운터 */
-    const counter = document.createElement("div");
 
-    counter.className = "slider-counter";
+    /* =================================================
+       페이지 표시
+    ================================================= */
+
+    const counter =
+        document.createElement("div");
+
+    counter.className =
+        "slider-counter";
 
     slider.appendChild(counter);
 
 
-    function maxIndex() {
-        return Math.max(0, files.length - visible);
-    }
 
+    /* =================================================
+       페이지 수
+    ================================================= */
+
+    const totalPages =
+        Math.ceil(files.length / visible);
+
+
+
+    /* =================================================
+       현재 슬라이드 업데이트
+    ================================================= */
 
     function update() {
 
+        /* 처음보다 뒤로 갔을 때 */
         if (current < 0) {
-            current = maxIndex();
+
+            current =
+                (totalPages - 1) * visible;
+
         }
 
-        if (current > maxIndex()) {
+
+        /* 끝을 넘었을 때 */
+        if (current >= files.length) {
+
             current = 0;
+
         }
 
-        const movePercent = current * (100 / visible);
+
+        /* 이동 거리 */
+        const movePercent =
+            current * (100 / visible);
+
 
         track.style.transform =
-            "translateX(-" + movePercent + "%)";
+            "translateX(-" +
+            movePercent +
+            "%)";
 
+
+        /* -------------------------
+           1장씩 표시
+        ------------------------- */
 
         if (visible === 1) {
 
-            counter.textContent =
-                (current + 1) + " / " + files.length;
+            const page =
+                Math.floor(
+                    current / visible
+                ) + 1;
 
-        } else {
-
-            const first = current + 1;
-            const last = Math.min(
-                current + visible,
-                files.length
-            );
 
             counter.textContent =
-                first + "–" + last + " / " + files.length;
+                page +
+                " / " +
+                totalPages;
+
+        }
+
+
+        /* -------------------------
+           2장씩 표시
+        ------------------------- */
+
+        else {
+
+            const page =
+                Math.floor(
+                    current / visible
+                ) + 1;
+
+
+            counter.textContent =
+                page +
+                " / " +
+                totalPages;
+
         }
 
     }
 
 
-prev.addEventListener("click", function() {
 
-    current -= visible;
+    /* =================================================
+       버튼 동작
 
-    update();
+       ★ visible만큼 이동하기 때문에
 
-});
+       visible = 1
+       → 한 장 이동
+
+       visible = 2
+       → 두 장 이동
+    ================================================= */
+
+    prev.addEventListener(
+        "click",
+        function() {
+
+            current -= visible;
+
+            pauseVideos();
+
+            update();
+
+        }
+    );
 
 
-next.addEventListener("click", function() {
+    next.addEventListener(
+        "click",
+        function() {
 
-    current += visible;
+            current += visible;
 
-    update();
+            pauseVideos();
 
-});
+            update();
+
+        }
+    );
 
 
-    /* 터치 스와이프 */
+
+    /* =================================================
+       모바일 스와이프
+    ================================================= */
+
     let touchStartX = 0;
     let touchEndX = 0;
+
 
     slider.addEventListener(
         "touchstart",
         function(e) {
-            touchStartX = e.changedTouches[0].screenX;
+
+            touchStartX =
+                e.changedTouches[0].screenX;
+
         },
-        {passive:true}
+        {
+            passive: true
+        }
     );
+
 
     slider.addEventListener(
         "touchend",
         function(e) {
 
-            touchEndX = e.changedTouches[0].screenX;
+            touchEndX =
+                e.changedTouches[0].screenX;
 
-            const distance = touchEndX - touchStartX;
 
-            if (Math.abs(distance) < 50) {
+            const distance =
+                touchEndX -
+                touchStartX;
+
+
+            /* 작은 움직임 무시 */
+            if (
+                Math.abs(distance) < 50
+            ) {
+
                 return;
+
             }
 
+
+            /* 왼쪽으로 밀기 */
             if (distance < 0) {
-    current += visible;
-    } else {
-    current -= visible;
-    }  
+
+                current += visible;
+
+            }
+
+
+            /* 오른쪽으로 밀기 */
+            else {
+
+                current -= visible;
+
+            }
+
+
+            pauseVideos();
 
             update();
 
         },
-        {passive:true}
+        {
+            passive: true
+        }
     );
 
 
+
+    /* =================================================
+       다른 페이지로 넘어갈 때
+       재생 중인 영상 정지
+    ================================================= */
+
+    function pauseVideos() {
+
+        slider
+            .querySelectorAll("video")
+            .forEach(function(video) {
+
+                video.pause();
+
+            });
+
+    }
+
+
+
+    /* 최초 표시 */
     update();
 
 });
 
 
-/* =========================================
+
+/* =====================================================
    이미지 확대
-========================================= */
+===================================================== */
 
 const lightbox =
-    document.getElementById("lightbox");
+    document.getElementById(
+        "lightbox"
+    );
 
 const lightboxImage =
-    document.getElementById("lightbox-image");
+    document.getElementById(
+        "lightbox-image"
+    );
 
 const lightboxClose =
-    document.getElementById("lightbox-close");
+    document.getElementById(
+        "lightbox-close"
+    );
+
 
 
 function openLightbox(src) {
 
-    lightboxImage.src = src;
-    lightbox.classList.add("active");
+    lightboxImage.src =
+        src;
+
+    lightbox.classList.add(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "hidden";
 
 }
+
 
 
 function closeLightbox() {
 
-    lightbox.classList.remove("active");
-    lightboxImage.src = "";
+    lightbox.classList.remove(
+        "active"
+    );
+
+    lightboxImage.src =
+        "";
+
+    document.body.style.overflow =
+        "";
 
 }
+
 
 
 lightboxClose.addEventListener(
@@ -742,30 +1132,41 @@ lightboxClose.addEventListener(
 );
 
 
+
 lightbox.addEventListener(
     "click",
     function(e) {
 
-        if (e.target === lightbox) {
+        if (
+            e.target === lightbox
+        ) {
+
             closeLightbox();
+
         }
 
     }
 );
+
 
 
 document.addEventListener(
     "keydown",
     function(e) {
 
-        if (e.key === "Escape") {
+        if (
+            e.key === "Escape"
+        ) {
+
             closeLightbox();
+
         }
 
     }
 );
 
 </script>
+
 
 </body>
 </html>
