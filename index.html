@@ -88,28 +88,55 @@ body {
     will-change: transform;
 }
 
-
-/* 기본: 1장씩 */
-
-.slide {
+.slider-page {
     flex: 0 0 100%;
     width: 100%;
     min-width: 0;
 }
 
 
-/* 2장씩 */
+/* =========================
+   1개
+========================= */
 
-.slider.two .slide {
-    flex: 0 0 50%;
-    width: 50%;
+.slider.one .slider-page {
+    display: grid;
+    grid-template-columns: 1fr;
 }
 
-/* 3장씩 */
-.slider.three .slide {
-    flex: 0 0 33.333333%;
-    width: 33.333333%;
-    padding: 0 5px;
+
+/* =========================
+   2개
+========================= */
+
+.slider.two .slider-page {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+
+/* =========================
+   3개
+========================= */
+
+.slider.three .slider-page {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+
+/* =========================
+   4개
+   1 2
+   3 4
+========================= */
+
+.slider.four .slider-page {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
 }
 
 
@@ -117,23 +144,16 @@ body {
    이미지
 ========================= */
 
+.slide {
+    width: 100%;
+    min-width: 0;
+}
+
 .slide img {
     display: block;
     width: 100%;
     height: auto;
     margin: 0;
-    cursor: zoom-in;
-}
-
-
-/* 2장 슬라이더 간격 */
-
-.slider.two .slide:nth-child(odd) {
-    padding-right: 5px;
-}
-
-.slider.two .slide:nth-child(even) {
-    padding-left: 5px;
 }
 
 
@@ -163,7 +183,6 @@ body {
 
 .slider-button {
     position: absolute;
-
     top: 50%;
     transform: translateY(-50%);
 
@@ -210,70 +229,10 @@ body {
 
 .slider-counter {
     text-align: center;
-
     margin-top: 13px;
-
     color: #777777;
-
     font-size: 13px;
     line-height: 1.4;
-}
-
-
-/* =========================
-   이미지 확대
-========================= */
-
-.lightbox {
-    position: fixed;
-
-    inset: 0;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 30px;
-
-    background: rgba(0, 0, 0, 0.90);
-
-    z-index: 99999;
-}
-
-.lightbox.active {
-    display: flex;
-}
-
-.lightbox img {
-    display: block;
-
-    max-width: 95vw;
-    max-height: 92vh;
-
-    width: auto;
-    height: auto;
-
-    object-fit: contain;
-}
-
-.lightbox-close {
-    position: fixed;
-
-    top: 15px;
-    right: 24px;
-
-    border: none;
-
-    padding: 0;
-
-    color: white;
-    background: transparent;
-
-    font-size: 46px;
-    line-height: 1;
-
-    cursor: pointer;
 }
 
 
@@ -304,7 +263,6 @@ body {
     .slider-button {
         width: 38px;
         height: 38px;
-
         font-size: 25px;
         line-height: 36px;
     }
@@ -329,13 +287,12 @@ body {
 
 <body>
 
-
 <div class="page">
 
 
 <!-- =====================================================
      채널아트
-     15 → 01
+     4개씩 / 2×2
 ===================================================== -->
 
 <section class="section">
@@ -345,19 +302,19 @@ body {
     </div>
 
     <div
-        class="slider one"
-        data-visible="1"
+        class="slider four"
+        data-visible="4"
         data-files='[
-       "channel15.png",
-       "channel14.png",
-       "channel13.png",
-       "channel12.png",
-       "channel11.png",
-       "channel10.png",
-"channel09.png",
-       "channel08.png",
-       "channel07.png",
-       "channel06.png",
+            "channel15.png",
+            "channel14.png",
+            "channel13.png",
+            "channel12.png",
+            "channel11.png",
+            "channel10.png",
+            "channel09.png",
+            "channel08.png",
+            "channel07.png",
+            "channel06.png",
             "channel05.png",
             "channel04.png",
             "channel03.png",
@@ -369,10 +326,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
      로딩화면
-     07 → 01
+     4개씩 / 2×2
 ===================================================== -->
 
 <section class="section">
@@ -386,15 +342,15 @@ body {
     </div>
 
     <div
-        class="slider one"
-        data-visible="1"
+        class="slider four"
+        data-visible="4"
         data-type="video"
         data-files='[
-       "loading12.mp4",
-       "loading11.mp4",
-       "loading10.mp4",
-       "loading09.mp4",
-       "loading08.mp4",
+            "loading12.mp4",
+            "loading11.mp4",
+            "loading10.mp4",
+            "loading09.mp4",
+            "loading08.mp4",
             "loading07.mp4",
             "loading06.mp4",
             "loading05.mp4",
@@ -408,10 +364,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
      하단패널
-     11 → 01
+     1개씩
 ===================================================== -->
 
 <section class="section">
@@ -424,8 +379,8 @@ body {
         class="slider one"
         data-visible="1"
         data-files='[
-       "pannel13.png",
-       "pannel12.png",
+            "pannel13.png",
+            "pannel12.png",
             "pannel11.png",
             "pannel10.png",
             "pannel09.png",
@@ -442,10 +397,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
      방송화면
-     08 → 02
+     4개씩 / 2×2
 ===================================================== -->
 
 <section class="section">
@@ -460,12 +414,12 @@ body {
     </div>
 
     <div
-        class="slider three"
-        data-visible="3"
+        class="slider four"
+        data-visible="4"
         data-files='[
-       "방송화면 09.png",
+            "방송화면 09.png",
             "방송화면08.png",
-       "방송화면 07.png",
+            "방송화면 07.png",
             "방송화면 06.png",
             "방송화면 05.png",
             "방송화면 04.png",
@@ -477,10 +431,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
      로고
-     14 → 01
+     3개씩
 ===================================================== -->
 
 <section class="section">
@@ -498,13 +451,13 @@ body {
     </div>
 
     <div
-        class="slider one"
-        data-visible="1"
+        class="slider three"
+        data-visible="3"
         data-files='[
-        "logo 18.png",
-       "logo 17.png",
+            "logo 18.png",
+            "logo 17.png",
             "logo 16.png",
-       "logo 15.png",
+            "logo 15.png",
             "logo 14.png",
             "logo 13.png",
             "logo 12.png",
@@ -525,10 +478,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
      썸네일
-     06 → 01
+     4개씩 / 2×2
 ===================================================== -->
 
 <section class="section">
@@ -538,10 +490,10 @@ body {
     </div>
 
     <div
-        class="slider two"
-        data-visible="2"
+        class="slider four"
+        data-visible="4"
         data-files='[
-       "썸네일07.png",
+            "썸네일07.png",
             "썸네일06.png",
             "썸네일05.png",
             "썸네일04.png",
@@ -554,10 +506,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
      포스터
-     4 → 1
+     2개씩
 ===================================================== -->
 
 <section class="section">
@@ -567,15 +518,15 @@ body {
     </div>
 
     <div
-        class="slider one"
-        data-visible="1"
+        class="slider two"
+        data-visible="2"
         data-files='[
-       "poster 12.png",
-       "poster 11.png",
-       "poster 10.png",
-       "poster 9.png",
-       "poster 8.png",
-       "poster 7.png",
+            "poster 12.png",
+            "poster 11.png",
+            "poster 10.png",
+            "poster 9.png",
+            "poster 8.png",
+            "poster 7.png",
             "poster 6.png",
             "poster 5.png",
             "poster 4.png",
@@ -588,11 +539,9 @@ body {
 </section>
 
 
-
 <!-- =====================================================
-     RT 포스터
-     2장씩 표시
-     2장씩 이동
+     알티 포스터
+     2개씩
 ===================================================== -->
 
 <section class="section">
@@ -605,11 +554,11 @@ body {
         class="slider two"
         data-visible="2"
         data-files='[
-       "RTposter14.png",
+            "RTposter14.png",
             "RTposter13.png",
             "RTposter12.png",
             "RTposter11.png",
-       "RTposter10.png",
+            "RTposter10.png",
             "RTposter09.png",
             "RTposter08.png",
             "RTposter07.png",
@@ -625,35 +574,41 @@ body {
 </section>
 
 
-
-
-
-
 <!-- =====================================================
      스케줄표
-     1장씩 표시
+     4개씩 / 2×2
 ===================================================== -->
+
 <section class="section">
-    <div class="section-title">스케줄표</div>
+
+    <div class="section-title">
+        스케줄표
+    </div>
 
     <div
-        class="slider one"
-        data-visible="1"
+        class="slider four"
+        data-visible="4"
         data-files='[
-       "schedule 05.png",
+            "schedule 05.png",
             "schedule 03.png",
             "schedule 02.png",
             "schedule 01.png"
         ]'>
     </div>
+
 </section>
+
 
 <!-- =====================================================
      팬캐릭터
-     1장씩 표시
+     1개씩
 ===================================================== -->
+
 <section class="section">
-    <div class="section-title">팬캐릭터</div>
+
+    <div class="section-title">
+        팬캐릭터
+    </div>
 
     <div class="section-description">
         3면도+png를 벡터로 제작해드립니다.<br>
@@ -664,23 +619,30 @@ body {
         class="slider one"
         data-visible="1"
         data-files='[
-       "character04.png",
-        "character03.png",
+            "character04.png",
+            "character03.png",
             "character02.png",
             "character01.png"
         ]'>
     </div>
+
 </section>
+
 
 <!-- =====================================================
      게임 UI
-     1장씩 표시
+     4개씩 / 2×2
 ===================================================== -->
+
 <section class="section">
-    <div class="section-title">게임 UI</div>
+
+    <div class="section-title">
+        게임 UI
+    </div>
+
     <div
-        class="slider one"
-        data-visible="1"
+        class="slider four"
+        data-visible="4"
         data-files='[
             "육성 창-1.png",
             "기본 화면 탭.png",
@@ -706,13 +668,14 @@ body {
             "육성 창.png"
         ]'>
     </div>
+
 </section>
+
 
 <!-- =====================================================
      PPT
-     18 → 1
-     2장씩 표시
-     2장씩 이동
+     2개씩
+     ★ 기존 순서 유지
 ===================================================== -->
 
 <section class="section">
@@ -725,10 +688,10 @@ body {
         class="slider two"
         data-visible="2"
         data-files='[
-       "ppt 21.png",
-       "ppt 22.png",
-       "ppt 19.png",
-       "ppt 20.png",
+            "ppt 21.png",
+            "ppt 22.png",
+            "ppt 19.png",
+            "ppt 20.png",
             "PPT 17.png",
             "PPT 18.png",
             "PPT 15.png",
@@ -756,31 +719,6 @@ body {
 </div>
 
 
-
-<!-- =====================================================
-     이미지 확대창
-===================================================== -->
-
-<div
-    class="lightbox"
-    id="lightbox">
-
-    <button
-        class="lightbox-close"
-        id="lightbox-close"
-        type="button">
-        ×
-    </button>
-
-    <img
-        id="lightbox-image"
-        src=""
-        alt="">
-
-</div>
-
-
-
 <script>
 
 /* =====================================================
@@ -798,12 +736,16 @@ document.querySelectorAll(".slider").forEach(function(slider) {
     const type =
         slider.dataset.type || "image";
 
+    let currentPage = 0;
 
-    /* 현재 첫 번째 아이템 번호 */
-    let current = 0;
+    const totalPages =
+        Math.ceil(files.length / visible);
 
 
-    /* 슬라이더 창 */
+    /* =========================
+       슬라이더 창
+    ========================= */
+
     const windowEl =
         document.createElement("div");
 
@@ -811,7 +753,6 @@ document.querySelectorAll(".slider").forEach(function(slider) {
         "slider-window";
 
 
-    /* 실제로 이동하는 트랙 */
     const track =
         document.createElement("div");
 
@@ -819,102 +760,146 @@ document.querySelectorAll(".slider").forEach(function(slider) {
         "slider-track";
 
 
-    /* =================================================
-       아이템 생성
-    ================================================= */
+    /* =========================
+       페이지 생성
+    ========================= */
 
-    files.forEach(function(file) {
+    for (
+        let pageIndex = 0;
+        pageIndex < totalPages;
+        pageIndex++
+    ) {
 
-        const slide =
+        const page =
             document.createElement("div");
 
-        slide.className =
-            "slide";
+        page.className =
+            "slider-page";
 
 
-        /* 영상 */
-        if (type === "video") {
+        const start =
+            pageIndex * visible;
 
-            const wrap =
-                document.createElement("div");
-
-            wrap.className =
-                "video-wrap";
-
-
-            const video =
-                document.createElement("video");
-
-            video.src =
-                encodeURI(file);
-
-            video.controls =
-                true;
-
-            video.loop =
-                true;
-
-            video.playsInline =
-                true;
-
-            video.preload =
-                "metadata";
-
-
-            wrap.appendChild(video);
-
-            slide.appendChild(wrap);
-
-        }
-
-
-        /* 이미지 */
-        else {
-
-            const img =
-                document.createElement("img");
-
-            img.src =
-                encodeURI(file);
-
-            img.alt =
-                "";
-
-            img.loading =
-                "lazy";
-
-
-            img.addEventListener(
-                "click",
-                function() {
-
-                    openLightbox(
-                        encodeURI(file)
-                    );
-
-                }
+        const end =
+            Math.min(
+                start + visible,
+                files.length
             );
 
 
-            slide.appendChild(img);
+        for (
+            let i = start;
+            i < end;
+            i++
+        ) {
+
+            const file =
+                files[i];
+
+
+            const slide =
+                document.createElement("div");
+
+            slide.className =
+                "slide";
+
+
+            /* =========================
+               영상
+            ========================= */
+
+            if (type === "video") {
+
+                const wrap =
+                    document.createElement("div");
+
+                wrap.className =
+                    "video-wrap";
+
+
+                const video =
+                    document.createElement("video");
+
+                video.src =
+                    encodeURI(file);
+
+                video.controls =
+                    true;
+
+                video.loop =
+                    true;
+
+                video.playsInline =
+                    true;
+
+                video.preload =
+                    "metadata";
+
+
+                wrap.appendChild(
+                    video
+                );
+
+                slide.appendChild(
+                    wrap
+                );
+
+            }
+
+
+            /* =========================
+               이미지
+               확대 기능 없음
+            ========================= */
+
+            else {
+
+                const img =
+                    document.createElement("img");
+
+                img.src =
+                    encodeURI(file);
+
+                img.alt =
+                    "";
+
+                img.loading =
+                    "lazy";
+
+
+                slide.appendChild(
+                    img
+                );
+
+            }
+
+
+            page.appendChild(
+                slide
+            );
 
         }
 
 
-        track.appendChild(slide);
+        track.appendChild(
+            page
+        );
 
-    });
-
-
-    windowEl.appendChild(track);
-
-    slider.appendChild(windowEl);
+    }
 
 
+    windowEl.appendChild(
+        track
+    );
 
-    /* =================================================
+    slider.appendChild(
+        windowEl
+    );
+
+
+    /* =========================
        이전 버튼
-    ================================================= */
+    ========================= */
 
     const prev =
         document.createElement("button");
@@ -933,14 +918,14 @@ document.querySelectorAll(".slider").forEach(function(slider) {
         "이전 샘플"
     );
 
+    slider.appendChild(
+        prev
+    );
 
-    slider.appendChild(prev);
 
-
-
-    /* =================================================
+    /* =========================
        다음 버튼
-    ================================================= */
+    ========================= */
 
     const next =
         document.createElement("button");
@@ -959,14 +944,14 @@ document.querySelectorAll(".slider").forEach(function(slider) {
         "다음 샘플"
     );
 
+    slider.appendChild(
+        next
+    );
 
-    slider.appendChild(next);
 
-
-
-    /* =================================================
-       페이지 표시
-    ================================================= */
+    /* =========================
+       페이지 번호
+    ========================= */
 
     const counter =
         document.createElement("div");
@@ -974,113 +959,74 @@ document.querySelectorAll(".slider").forEach(function(slider) {
     counter.className =
         "slider-counter";
 
-    slider.appendChild(counter);
+    slider.appendChild(
+        counter
+    );
 
 
-
-    /* =================================================
-       페이지 수
-    ================================================= */
-
-    const totalPages =
-        Math.ceil(files.length / visible);
-
-
-
-    /* =================================================
-       현재 슬라이드 업데이트
-    ================================================= */
+    /* =========================
+       업데이트
+    ========================= */
 
     function update() {
 
-        /* 처음보다 뒤로 갔을 때 */
-        if (current < 0) {
+        if (currentPage < 0) {
 
-            current =
-                (totalPages - 1) * visible;
-
-        }
-
-
-        /* 끝을 넘었을 때 */
-        if (current >= files.length) {
-
-            current = 0;
+            currentPage =
+                totalPages - 1;
 
         }
 
 
-        /* 이동 거리 */
-        const movePercent =
-            current * (100 / visible);
+        if (
+            currentPage >= totalPages
+        ) {
+
+            currentPage = 0;
+
+        }
 
 
         track.style.transform =
             "translateX(-" +
-            movePercent +
+            (currentPage * 100) +
             "%)";
 
 
-        /* -------------------------
-           1장씩 표시
-        ------------------------- */
-
-        if (visible === 1) {
-
-            const page =
-                Math.floor(
-                    current / visible
-                ) + 1;
-
-
-            counter.textContent =
-                page +
-                " / " +
-                totalPages;
-
-        }
-
-
-        /* -------------------------
-           2장씩 표시
-        ------------------------- */
-
-        else {
-
-            const page =
-                Math.floor(
-                    current / visible
-                ) + 1;
-
-
-            counter.textContent =
-                page +
-                " / " +
-                totalPages;
-
-        }
+        counter.textContent =
+            (currentPage + 1) +
+            " / " +
+            totalPages;
 
     }
 
 
+    /* =========================
+       영상 정지
+    ========================= */
 
-    /* =================================================
-       버튼 동작
+    function pauseVideos() {
 
-       ★ visible만큼 이동하기 때문에
+        slider
+            .querySelectorAll("video")
+            .forEach(function(video) {
 
-       visible = 1
-       → 한 장 이동
+                video.pause();
 
-       visible = 2
-       → 두 장 이동
-    ================================================= */
+            });
+
+    }
+
+
+    /* =========================
+       이전 버튼
+    ========================= */
 
     prev.addEventListener(
         "click",
         function() {
 
-            current -= visible;
+            currentPage--;
 
             pauseVideos();
 
@@ -1089,12 +1035,16 @@ document.querySelectorAll(".slider").forEach(function(slider) {
         }
     );
 
+
+    /* =========================
+       다음 버튼
+    ========================= */
 
     next.addEventListener(
         "click",
         function() {
 
-            current += visible;
+            currentPage++;
 
             pauseVideos();
 
@@ -1104,10 +1054,9 @@ document.querySelectorAll(".slider").forEach(function(slider) {
     );
 
 
-
-    /* =================================================
+    /* =========================
        모바일 스와이프
-    ================================================= */
+    ========================= */
 
     let touchStartX = 0;
     let touchEndX = 0;
@@ -1140,7 +1089,6 @@ document.querySelectorAll(".slider").forEach(function(slider) {
                 touchStartX;
 
 
-            /* 작은 움직임 무시 */
             if (
                 Math.abs(distance) < 50
             ) {
@@ -1150,18 +1098,15 @@ document.querySelectorAll(".slider").forEach(function(slider) {
             }
 
 
-            /* 왼쪽으로 밀기 */
             if (distance < 0) {
 
-                current += visible;
+                currentPage++;
 
             }
 
-
-            /* 오른쪽으로 밀기 */
             else {
 
-                current -= visible;
+                currentPage--;
 
             }
 
@@ -1177,124 +1122,11 @@ document.querySelectorAll(".slider").forEach(function(slider) {
     );
 
 
-
-    /* =================================================
-       다른 페이지로 넘어갈 때
-       재생 중인 영상 정지
-    ================================================= */
-
-    function pauseVideos() {
-
-        slider
-            .querySelectorAll("video")
-            .forEach(function(video) {
-
-                video.pause();
-
-            });
-
-    }
-
-
-
     /* 최초 표시 */
+
     update();
 
 });
-
-
-
-/* =====================================================
-   이미지 확대
-===================================================== */
-
-const lightbox =
-    document.getElementById(
-        "lightbox"
-    );
-
-const lightboxImage =
-    document.getElementById(
-        "lightbox-image"
-    );
-
-const lightboxClose =
-    document.getElementById(
-        "lightbox-close"
-    );
-
-
-
-function openLightbox(src) {
-
-    lightboxImage.src =
-        src;
-
-    lightbox.classList.add(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
-
-
-function closeLightbox() {
-
-    lightbox.classList.remove(
-        "active"
-    );
-
-    lightboxImage.src =
-        "";
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-
-lightboxClose.addEventListener(
-    "click",
-    closeLightbox
-);
-
-
-
-lightbox.addEventListener(
-    "click",
-    function(e) {
-
-        if (
-            e.target === lightbox
-        ) {
-
-            closeLightbox();
-
-        }
-
-    }
-);
-
-
-
-document.addEventListener(
-    "keydown",
-    function(e) {
-
-        if (
-            e.key === "Escape"
-        ) {
-
-            closeLightbox();
-
-        }
-
-    }
-);
 
 </script>
 
