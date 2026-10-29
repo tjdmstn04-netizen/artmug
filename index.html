@@ -154,6 +154,7 @@ body {
     width: 100%;
     height: auto;
     margin: 0;
+    border: 0;
 }
 
 
@@ -734,414 +735,179 @@ body {
 
 
 <script>
-
-/* =====================================================
-   모든 슬라이더 생성
-===================================================== */
-
+/* 성능 최적화:
+   - 슬라이더가 화면 가까이에 왔을 때만 파일 로드
+   - 현재 페이지의 이미지/영상만 실제 src 지정
+   - 동영상은 preload=none으로 설정
+   - 슬라이드 이동 시 이전 동영상 정지
+*/
 document.querySelectorAll(".slider").forEach(function(slider) {
+    let files;
 
-    const files =
-        JSON.parse(slider.dataset.files);
+    try {
+        files = JSON.parse(slider.dataset.files);
+    } catch (error) {
+        console.error("샘플 목록을 읽을 수 없습니다.", error);
+        return;
+    }
 
-    const visible =
-        Number(slider.dataset.visible || 1);
-
-    const type =
-        slider.dataset.type || "image";
-
+    const visible = Math.max(1, Number(slider.dataset.visible || 1));
+    const type = slider.dataset.type || "image";
     let currentPage = 0;
+    let activated = false;
+    const totalPages = Math.ceil(files.length / visible);
 
-    const totalPages =
-        Math.ceil(files.length / visible);
+    const windowEl = document.createElement("div");
+    windowEl.className = "slider-window";
 
+    const track = document.createElement("div");
+    track.className = "slider-track";
+    const pages = [];
 
-    /* =========================
-       슬라이더 창
-    ========================= */
+    for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+        const page = document.createElement("div");
+        page.className = "slider-page";
 
-    const windowEl =
-        document.createElement("div");
+        const first = pageIndex * visible;
+        const last = Math.min(first + visible, files.length);
 
-    windowEl.className =
-        "slider-window";
-
-
-    const track =
-        document.createElement("div");
-
-    track.className =
-        "slider-track";
-
-
-    /* =========================
-       페이지 생성
-    ========================= */
-
-    for (
-        let pageIndex = 0;
-        pageIndex < totalPages;
-        pageIndex++
-    ) {
-
-        const page =
-            document.createElement("div");
-
-        page.className =
-            "slider-page";
-
-
-        const start =
-            pageIndex * visible;
-
-        const end =
-            Math.min(
-                start + visible,
-                files.length
-            );
-
-
-        for (
-            let i = start;
-            i < end;
-            i++
-        ) {
-
-            const file =
-                files[i];
-
-
-            const slide =
-                document.createElement("div");
-
-            slide.className =
-                "slide";
-
-
-            /* =========================
-               영상
-            ========================= */
+        for (let i = first; i < last; i++) {
+            const slide = document.createElement("div");
+            slide.className = "slide";
 
             if (type === "video") {
+                const wrap = document.createElement("div");
+                wrap.className = "video-wrap";
 
-                const wrap =
-                    document.createElement("div");
+                const video = document.createElement("video");
+                video.controls = true;
+                video.loop = true;
+                video.playsInline = true;
+                video.preload = "none";
+                video.dataset.file = files[i];
 
-                wrap.className =
-                    "video-wrap";
-
-
-                const video =
-                    document.createElement("video");
-
-                video.src =
-                    encodeURI(file);
-
-                video.controls =
-                    true;
-
-                video.loop =
-                    true;
-
-                video.playsInline =
-                    true;
-
-                video.preload =
-                    "metadata";
-
-
-                wrap.appendChild(
-                    video
-                );
-
-                slide.appendChild(
-                    wrap
-                );
-
+                wrap.appendChild(video);
+                slide.appendChild(wrap);
+            } else {
+                const img = document.createElement("img");
+                img.alt = "";
+                img.loading = "lazy";
+                img.decoding = "async";
+                img.dataset.file = files[i];
+                slide.appendChild(img);
             }
 
-
-            /* =========================
-               이미지
-               확대 기능 없음
-            ========================= */
-
-            else {
-
-                const img =
-                    document.createElement("img");
-
-                img.src =
-                    encodeURI(file);
-
-                img.alt =
-                    "";
-
-                img.loading =
-                    "lazy";
-
-
-                slide.appendChild(
-                    img
-                );
-
-            }
-
-
-            page.appendChild(
-                slide
-            );
-
+            page.appendChild(slide);
         }
 
-
-        track.appendChild(
-            page
-        );
-
+        pages.push(page);
+        track.appendChild(page);
     }
 
+    windowEl.appendChild(track);
+    slider.appendChild(windowEl);
 
-    windowEl.appendChild(
-        track
-    );
+    const prev = document.createElement("button");
+    prev.className = "slider-button slider-prev";
+    prev.type = "button";
+    prev.textContent = "‹";
+    prev.setAttribute("aria-label", "이전 샘플");
+    slider.appendChild(prev);
 
-    slider.appendChild(
-        windowEl
-    );
+    const next = document.createElement("button");
+    next.className = "slider-button slider-next";
+    next.type = "button";
+    next.textContent = "›";
+    next.setAttribute("aria-label", "다음 샘플");
+    slider.appendChild(next);
 
+    const counter = document.createElement("div");
+    counter.className = "slider-counter";
+    slider.appendChild(counter);
 
-    /* =========================
-       이전 버튼
-    ========================= */
+    function loadPage(pageIndex) {
+        if (!activated || !pages[pageIndex]) return;
 
-    const prev =
-        document.createElement("button");
+        pages[pageIndex].querySelectorAll("img[data-file]").forEach(function(img) {
+            if (!img.getAttribute("src")) {
+                img.src = encodeURI(img.dataset.file);
+            }
+        });
 
-    prev.className =
-        "slider-button slider-prev";
+        pages[pageIndex].querySelectorAll("video[data-file]").forEach(function(video) {
+            if (!video.getAttribute("src")) {
+                video.src = encodeURI(video.dataset.file);
+                video.load();
+            }
+        });
+    }
 
-    prev.type =
-        "button";
-
-    prev.innerHTML =
-        "‹";
-
-    prev.setAttribute(
-        "aria-label",
-        "이전 샘플"
-    );
-
-    slider.appendChild(
-        prev
-    );
-
-
-    /* =========================
-       다음 버튼
-    ========================= */
-
-    const next =
-        document.createElement("button");
-
-    next.className =
-        "slider-button slider-next";
-
-    next.type =
-        "button";
-
-    next.innerHTML =
-        "›";
-
-    next.setAttribute(
-        "aria-label",
-        "다음 샘플"
-    );
-
-    slider.appendChild(
-        next
-    );
-
-
-    /* =========================
-       페이지 번호
-    ========================= */
-
-    const counter =
-        document.createElement("div");
-
-    counter.className =
-        "slider-counter";
-
-    slider.appendChild(
-        counter
-    );
-
-
-    /* =========================
-       업데이트
-    ========================= */
+    function pauseVideosOutsideCurrentPage() {
+        slider.querySelectorAll("video").forEach(function(video) {
+            if (!pages[currentPage] || !pages[currentPage].contains(video)) {
+                video.pause();
+            }
+        });
+    }
 
     function update() {
+        if (totalPages === 0) return;
 
-        if (currentPage < 0) {
+        if (currentPage < 0) currentPage = totalPages - 1;
+        if (currentPage >= totalPages) currentPage = 0;
 
-            currentPage =
-                totalPages - 1;
+        track.style.transform = "translateX(-" + (currentPage * 100) + "%)";
+        counter.textContent = (currentPage + 1) + " / " + totalPages;
 
-        }
-
-
-        if (
-            currentPage >= totalPages
-        ) {
-
-            currentPage = 0;
-
-        }
-
-
-        track.style.transform =
-            "translateX(-" +
-            (currentPage * 100) +
-            "%)";
-
-
-        counter.textContent =
-            (currentPage + 1) +
-            " / " +
-            totalPages;
-
+        pauseVideosOutsideCurrentPage();
+        loadPage(currentPage);
     }
 
-
-    /* =========================
-       영상 정지
-    ========================= */
-
-    function pauseVideos() {
-
-        slider
-            .querySelectorAll("video")
-            .forEach(function(video) {
-
-                video.pause();
-
-            });
-
+    function goToPage(pageIndex) {
+        currentPage = pageIndex;
+        activated = true;
+        update();
     }
 
+    prev.addEventListener("click", function() {
+        goToPage(currentPage - 1);
+    });
 
-    /* =========================
-       이전 버튼
-    ========================= */
-
-    prev.addEventListener(
-        "click",
-        function() {
-
-            currentPage--;
-
-            pauseVideos();
-
-            update();
-
-        }
-    );
-
-
-    /* =========================
-       다음 버튼
-    ========================= */
-
-    next.addEventListener(
-        "click",
-        function() {
-
-            currentPage++;
-
-            pauseVideos();
-
-            update();
-
-        }
-    );
-
-
-    /* =========================
-       모바일 스와이프
-    ========================= */
+    next.addEventListener("click", function() {
+        goToPage(currentPage + 1);
+    });
 
     let touchStartX = 0;
-    let touchEndX = 0;
 
+    slider.addEventListener("touchstart", function(event) {
+        touchStartX = event.changedTouches[0].screenX;
+    }, { passive: true });
 
-    slider.addEventListener(
-        "touchstart",
-        function(e) {
-
-            touchStartX =
-                e.changedTouches[0].screenX;
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    slider.addEventListener(
-        "touchend",
-        function(e) {
-
-            touchEndX =
-                e.changedTouches[0].screenX;
-
-
-            const distance =
-                touchEndX -
-                touchStartX;
-
-
-            if (
-                Math.abs(distance) < 50
-            ) {
-
-                return;
-
-            }
-
-
-            if (distance < 0) {
-
-                currentPage++;
-
-            }
-
-            else {
-
-                currentPage--;
-
-            }
-
-
-            pauseVideos();
-
-            update();
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    /* 최초 표시 */
+    slider.addEventListener("touchend", function(event) {
+        const distance = event.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(distance) < 50) return;
+        goToPage(distance < 0 ? currentPage + 1 : currentPage - 1);
+    }, { passive: true });
 
     update();
 
-});
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    activated = true;
+                    loadPage(currentPage);
+                    observer.disconnect();
+                }
+            });
+        }, { rootMargin: "500px 0px" });
 
+        observer.observe(slider);
+    } else {
+        activated = true;
+        loadPage(currentPage);
+    }
+});
 </script>
 
 
