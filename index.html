@@ -355,7 +355,7 @@ document.querySelectorAll(".slider").forEach(function(slider) {
       } else {
         const img = document.createElement("img");
         img.alt = "";
-        img.loading = "lazy";
+        img.loading = "eager";
         img.decoding = "async";
         img.dataset.file = files[i];
         slide.appendChild(img);
